@@ -1,6 +1,10 @@
+from collections import namedtuple
+
 from cfpq_data import *
 import networkx.drawing.nx_pydot
 from networkx import MultiDiGraph
+
+Graph = namedtuple("Graph", "nodes edges labels")
 
 
 def load_graph(name: str) -> MultiDiGraph:
@@ -13,10 +17,10 @@ def graph_info(name: str):
     V = graph.number_of_nodes()  # count of node
     E = graph.number_of_edges()  # count of edges
     L = cfpq_data.get_sorted_labels(graph)  # label
-    return V, E, L
+    return Graph(V, E, L)
 
 
-def create_graph(
+def create_and_save_to_dot_labeled_two_cycles_graph_graph(
     first_circle_vertex_count, second_circle_vertex_count, labels, filename: str
 ):
     graph = cfpq_data.labeled_two_cycles_graph(
