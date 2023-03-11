@@ -62,9 +62,12 @@ def create_labeled_two_cycles_graph(
     :param labels: list of labels
     :return: MultiDiGraph
     """
-    return cfpq_data.labeled_two_cycles_graph(
-        first_circle_vertex_count, second_circle_vertex_count, labels=labels
-    )
+    if first_circle_vertex_count == 0 and second_circle_vertex_count == 0:
+        return networkx.empty_graph()
+    else:
+        return cfpq_data.labeled_two_cycles_graph(
+            first_circle_vertex_count, second_circle_vertex_count, labels=labels
+        )
 
 
 def create_and_save_to_dot_labeled_two_cycles_graph(
