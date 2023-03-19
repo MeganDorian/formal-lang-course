@@ -14,8 +14,6 @@ def transform_front(front: dok_matrix, second_states_size: int) -> dok_matrix:
     :param second_states_size: count of states in the second graph
     :return: transformed dok_matrix front
     """
-    # print("before transform")
-    # print(front)
     transformed = dok_matrix(front.shape, dtype=bool)
     for Ix, Iy in zip(*front.nonzero()):
         if Iy < second_states_size:
@@ -24,8 +22,6 @@ def transform_front(front: dok_matrix, second_states_size: int) -> dok_matrix:
                 front_shifted = Ix - (Ix % second_states_size)
                 transformed[front_shifted + Iy, Iy] = True
                 transformed[[front_shifted + Iy], second_states_size:] += row_right
-    # print("after transform")
-    # print(transformed)
     return transformed
 
 
