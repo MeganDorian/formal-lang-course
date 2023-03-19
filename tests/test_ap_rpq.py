@@ -1,7 +1,7 @@
 import pytest
 
 from project.task01.graph import create_labeled_two_cycles_graph
-from project.task03.regular_queries import all_pairs_rpq
+from project.task03.ap_rpq import all_pairs_rpq
 
 
 @pytest.mark.parametrize(
