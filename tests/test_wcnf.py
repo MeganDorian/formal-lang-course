@@ -6,9 +6,9 @@ from project.task06.wcnf import load_cfg, make_weak_ncf, write_cfg
 @pytest.mark.parametrize(
     "filename, expectedfile",
     [
-        ("cfg/cfg", "cfg/cfg-result"),
-        ("cfg/cfg-2", "cfg/cfg-result-2"),
-        ("cfg/cfg-3", "cfg/cfg-result-3"),
+        ("tests/cfg/cfg", "tests/cfg/cfg-result"),
+        ("tests/cfg/cfg-2", "tests/cfg/cfg-result-2"),
+        ("tests/cfg/cfg-3", "tests/cfg/cfg-result-3"),
     ],
 )
 def test_weak_normal_chomsky_form(filename, expectedfile):
