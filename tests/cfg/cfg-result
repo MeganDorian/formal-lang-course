@@ -1,0 +1,3 @@
+S -> A "VAR:0#CNF#"
+A -> epsilon
+0#CNF# -> 0
