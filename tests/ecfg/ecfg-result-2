@@ -1,0 +1,4 @@
+A -> a | B
+B -> epsilon | C
+C -> c
+S -> S A
