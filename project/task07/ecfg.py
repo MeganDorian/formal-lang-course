@@ -21,11 +21,15 @@ class ECFG:
         for production in cfg.productions:
             head = production.head
             body = ""
-            for pr_body in production.body:
-                body += "$" if not production.body else pr_body.value
+            if len(production.body) == 0:
+                body = "$"
+            else:
+                body = body.join(" " + pr_body.value for pr_body in production.body)
             body = Regex(body)
             self.production[head] = (
-                (self.production.get(head) + body) if head in self.production else body
+                (self.production.get(head).union(body))
+                if head in self.production
+                else body
             )
 
         self.start_symbols = (
@@ -33,6 +37,7 @@ class ECFG:
         )
         self.variables = set(cfg.variables)
         self.variables.add(self.start_symbols)
+        self.terminals = cfg.terminals
         return self
 
     def from_file(self, filename: str):
