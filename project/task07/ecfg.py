@@ -47,3 +47,6 @@ class ECFG:
         """
         cfg = load_cfg(filename)
         return self.from_cfg(cfg)
+
+    def from_string(self, string: str):
+        return self.from_cfg(CFG.from_text(string))
