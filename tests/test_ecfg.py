@@ -53,3 +53,37 @@ def test_from_cfg_to_ecfg_from_wcnf(filename):
     assert weak.start_symbol == ecfg.start_symbols
     assert weak.terminals == ecfg.terminals
     assert weak.variables == ecfg.variables
+
+
+@pytest.mark.parametrize(
+    "filename, productions",
+    [
+        (
+            "tests/ecfg/ecfg",
+            {
+                Variable("S"): Regex("B | a*b | epsilon"),
+                Variable("C"): Regex("S S"),
+                Variable("B"): Regex("C"),
+            },
+        ),
+        (
+            "tests/ecfg/ecfg-2",
+            {
+                Variable("S"): Regex("S A"),
+                Variable("A"): Regex("a | B"),
+                Variable("B"): Regex("C | epsilon"),
+                Variable("C"): Regex("c"),
+            },
+        ),
+    ],
+)
+def test_from_cfg_to_ecfg_from_text(filename, productions):
+    with open(filename, "r") as f:
+        f_str = f.read()
+    ecfg = ECFG().from_string(f_str)
+    assert len(productions) == len(ecfg.production)
+    for head, body in ecfg.production.items():
+        expected = productions[head]
+        b = body.to_epsilon_nfa()
+        d = expected.to_epsilon_nfa()
+        assert b.is_equivalent_to(d)
