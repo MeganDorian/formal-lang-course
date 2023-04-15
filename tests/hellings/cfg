@@ -1,0 +1,5 @@
+A -> B S | C | epsilon
+B -> b C
+S -> C | A S1 C
+S1 -> S B
+C -> a
