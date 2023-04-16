@@ -1,6 +1,7 @@
 from pyformlang.cfg import CFG, Variable, Terminal
 
-from project.task06.wcnf import make_weak_ncf
+from project.task01.graph import load_graph_from_file
+from project.task06.wcnf import make_weak_ncf, load_cfg
 
 
 def context_free_path_querying(r, variables):
@@ -62,16 +63,25 @@ def hellings_algorithm(graph, cfg: CFG):
 
 
 def get_reachable_by_hellings(
-    graph, cfg: CFG, start_states: list, final_states: list, variable: str
+    graph, cfg, start_states: list, final_states: list, variable: str
 ):
     """
     Performs hellings algorithm for the graph with cfg
+    Accepts graph as: MultiGraph, path to file with saved graph
+    Accepts cfg as: CFG, path to file with saved cfg, text
     :param graph: any type of graph from networkx.Graph
     :param cfg: context free grammar representation
     :param start_states: set of start_states. If None, all states marks as start ones
     :param final_states: set of final_states. If None, all states marks as final ones
     :param variable: start variable
     """
+    if isinstance(graph, str):
+        graph = load_graph_from_file(graph)
+    if isinstance(cfg, str):
+        try:
+            cfg = load_cfg(cfg)
+        except OSError:
+            cfg = CFG.from_text(cfg)
     variable = Variable(variable)
     if start_states is None:
         start_states = graph.nodes
@@ -83,5 +93,5 @@ def get_reachable_by_hellings(
     r = set()
     for var, v, u in result:
         if v in start_states and u in final_states and var == variable:
-            r.add((v, u))
+            r.add((int(v), int(u)))
     return r
