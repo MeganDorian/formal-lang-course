@@ -9,7 +9,7 @@ from project.task08.hellings import get_reachable_by_hellings
     "graph, cfg, start, final, variable, result",
     [
         (
-            "hellings/graph",
+            "tests/hellings/graph",
             """
                     A -> a | epsilon
                     B -> b C
@@ -24,7 +24,7 @@ from project.task08.hellings import get_reachable_by_hellings
         ),
         (
             create_labeled_two_cycles_graph(3, 2, ["a", "b"]),
-            load_cfg("hellings/cfg"),
+            load_cfg("tests/hellings/cfg"),
             {0},
             {1, 2},
             "A",
@@ -32,7 +32,7 @@ from project.task08.hellings import get_reachable_by_hellings
         ),
         (
             create_labeled_two_cycles_graph(3, 2, ["a", "b"]),
-            "hellings/cfg",
+            "tests/hellings/cfg",
             {0},
             {1, 2},
             "A",
