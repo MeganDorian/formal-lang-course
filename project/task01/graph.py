@@ -1,8 +1,9 @@
 from collections import namedtuple
 
-from cfpq_data import *
 import networkx.drawing.nx_pydot
+from cfpq_data import *
 from networkx import MultiDiGraph
+from networkx.drawing import nx_pydot
 
 Graph = namedtuple("Graph", "nodes edges labels")
 
@@ -37,6 +38,10 @@ def load_graph_and_get_info(name: str):
     """
     graph = load_graph(name)
     return get_graph_info(graph)
+
+
+def load_graph_from_file(filename: str) -> MultiDiGraph:
+    return nx_pydot.read_dot(filename)
 
 
 def save_to_dot_graph(graph, filename="dot_graph"):
