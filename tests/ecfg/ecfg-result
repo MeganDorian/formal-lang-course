@@ -1,0 +1,3 @@
+B -> C
+C -> S S
+S -> a*b | epsilon | B
