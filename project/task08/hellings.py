@@ -37,8 +37,8 @@ class Helling:
             if pr.body and isinstance(pr.body[0], Terminal):
                 terminals.append(pr)
 
-        self.r = {(n, v, v) for v in self.graph.nodes for n in epsilons} | {
-            (n.head, v, u)
+        self.r = {(n, int(v), int(v)) for v in self.graph.nodes for n in epsilons} | {
+            (n.head, int(v), int(u))
             for v, u, t in self.graph.edges.data("label")
             for n in terminals
             if n.body[0].value == t
@@ -70,30 +70,3 @@ class Helling:
                             res.add((nk.head, v, v2))
             self.r |= res
         return self.r
-
-
-def hellings(graph, cfg, start_states: list, final_states: list, variable: str):
-    """
-    Performs hellings algorithm for the graph with cfg
-    Accepts graph as: MultiGraph, path to file with saved graph
-    Accepts cfg as: CFG, path to file with saved cfg, text
-    :param graph: any type of graph from networkx.Graph
-    :param cfg: context free grammar representation
-    :param start_states: set of start_states. If None, all states marks as start ones
-    :param final_states: set of final_states. If None, all states marks as final ones
-    :param variable: start variable
-    """
-    variable = Variable(variable)
-    helling = Helling(graph, cfg)
-    result = helling.hellings_algorithm()
-    if start_states is None:
-        start_states = helling.graph.nodes
-
-    if final_states is None:
-        final_states = helling.graph.nodes
-
-    r = set()
-    for var, v, u in result:
-        if v in start_states and u in final_states and var == variable:
-            r.add((int(v), int(u)))
-    return r
