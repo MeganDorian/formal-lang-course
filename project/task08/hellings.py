@@ -72,34 +72,6 @@ class Helling:
         return self.r
 
 
-def context_free_path_querying(r, variables):
-    m = r.copy()
-    while len(m) != 0:
-        ni, v, u = m.pop()
-        res = set()
-        for nj, v1, v2 in r:
-            if v == v2:
-                for nk in variables:
-                    if (
-                        nj.value == nk.body[0].value
-                        and ni.value == nk.body[1].value
-                        and (nk.head, v1, u) not in r
-                    ):
-                        m.add((nk.head, v1, u))
-                        res.add((nk.head, v1, u))
-            if v1 == u:
-                for nk in variables:
-                    if (
-                        ni.value == nk.body[0].value
-                        and nj.value == nk.body[1].value
-                        and (nk.head, v, v2) not in r
-                    ):
-                        m.add((nk.head, v, v2))
-                        res.add((nk.head, v, v2))
-        r |= res
-    return r
-
-
 def hellings(graph, cfg, start_states: list, final_states: list, variable: str):
     """
     Performs hellings algorithm for the graph with cfg
