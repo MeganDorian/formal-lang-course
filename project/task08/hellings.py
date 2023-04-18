@@ -85,13 +85,14 @@ def get_reachable_by_hellings(
     :param variable: start variable
     """
     variable = Variable(variable)
+    result = hellings_algorithm(graph, cfg)
+
     if start_states is None:
         start_states = graph.nodes
 
     if final_states is None:
         final_states = graph.nodes
 
-    result = hellings_algorithm(graph, cfg)
     r = set()
     for var, v, u in result:
         if v in start_states and u in final_states and var == variable:
