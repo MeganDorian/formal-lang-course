@@ -35,6 +35,8 @@ def context_free_path_querying(r, variables):
 def hellings_algorithm(graph, cfg: CFG):
     """
     Perform hellings algorithm
+    Accepts graph as: MultiGraph, path to file with saved graph
+    Accepts cfg as: CFG, path to file with saved cfg, text
     1. Makes from cfg wcfg
     2. Creates list of epsilons, terminals and productions for further algorithm work
     3. Calculates r = {(Ni, v, v) | v ∈ V ∧ Ni → ε ∈ P} ∪ {(Ni, v, u) | (v, t, u) ∈ E ∧ Ni → t ∈ P}
@@ -42,6 +44,13 @@ def hellings_algorithm(graph, cfg: CFG):
     :param graph: any type of graph from networkx.Graph
     :param cfg: context free grammar representation
     """
+    if isinstance(graph, str):
+        graph = load_graph_from_file(graph)
+    if isinstance(cfg, str):
+        try:
+            cfg = load_cfg(cfg)
+        except OSError:
+            cfg = CFG.from_text(cfg)
     wcfg = make_weak_ncf(cfg)
     epsilons = [pr.head for pr in wcfg.productions if not pr.body]
     variables = list()
@@ -75,13 +84,6 @@ def get_reachable_by_hellings(
     :param final_states: set of final_states. If None, all states marks as final ones
     :param variable: start variable
     """
-    if isinstance(graph, str):
-        graph = load_graph_from_file(graph)
-    if isinstance(cfg, str):
-        try:
-            cfg = load_cfg(cfg)
-        except OSError:
-            cfg = CFG.from_text(cfg)
     variable = Variable(variable)
     if start_states is None:
         start_states = graph.nodes
