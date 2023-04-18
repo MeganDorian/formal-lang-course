@@ -2,7 +2,7 @@ import pytest
 
 from project.task01.graph import create_labeled_two_cycles_graph
 from project.task06.wcnf import load_cfg
-from project.task08.hellings import get_reachable_by_hellings
+from project.task08.hellings import hellings
 
 
 @pytest.mark.parametrize(
@@ -41,4 +41,4 @@ from project.task08.hellings import get_reachable_by_hellings
     ],
 )
 def test_hellings_algorithm(graph, cfg, start, final, variable, result):
-    assert get_reachable_by_hellings(graph, cfg, start, final, variable) == result
+    assert hellings(graph, cfg, start, final, variable) == result
