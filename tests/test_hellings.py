@@ -2,7 +2,7 @@ import pytest
 
 from project.task01.graph import create_labeled_two_cycles_graph
 from project.task06.wcnf import load_cfg
-from project.task08.hellings import hellings
+from project.task08_09.cfpq import hellings
 
 
 @pytest.mark.parametrize(
