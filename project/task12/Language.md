@@ -54,21 +54,27 @@ stmt -> PRINT
 print -> print expr
 bind -> LET var ASSIGN expr
 
+lambda -> LP lambda RP
+          | LAMBDA elems ARROW expr
+
+elems -> var
+         | LB elems (COMMA elems)* RB
+
 expr -> var
         | val
         | SET_START list FOR expr
         | SET_FINAL list FOR expr
         | ADD_START expr FOR expr
         | ADD_FINAL expr FOR expr
-        | GET_START
-        | GET_FINAL
-        | GET_REACHABLE
-        | GET_VERTICES
-        | GET_EDGES
-        | GET_LABELS
-        | MAP
-        | FILTER
-        | LOAD
+        | GET_START expr
+        | GET_FINAL expr
+        | GET_REACHABLE expr
+        | GET_VERTICES expr
+        | GET_EDGES expr
+        | GET_LABELS expr
+        | MAP lambda FOR expr
+        | FILTER lambda FOR expr
+        | LOAD STR
         | expr INTER expr
         | expr CONCAT expr
         | expr UNION expr
@@ -86,7 +92,7 @@ val -> STR
        | list
 
 list -> LP RP
-        | LP V (COMMA V)* RB
+        | LP V (COMMA V)* RP
 
 vertex -> INT
 
@@ -105,11 +111,15 @@ RP -> ')'
 LB -> '{'
 RB -> '}'
 COMMA -> ','
+LAMBDA -> '\_'
+ARROW -> '=>'
+
 INTER -> '&'
 CONCAT -> '++'
 UNION -> '|'
 SKLEENE -> '*'
 SWITCH -> '<<'
+IN -> 'in'
 
 INT -> [0-9]+
 CHAR -> [a-zA-Z]
@@ -126,10 +136,38 @@ SET_START -> 'set_start'
 SET_FINAL -> 'set_final'
 ADD_START -> 'add_start'
 ADD_FINAL -> 'add_final'
+LOAD -> 'load'
+MAP -> 'map'
+FILTER -> 'filter'
+GET_START -> 'get_start'
+GET_FINAL -> 'get_final'
+GET_REACHABLE -> 'get_reachable'
+GET_VERTICES -> 'get_verices'
+GET_EDGES -> 'get_edges'
+GET_LABELS -> 'get_labels'
 ```
 
 ## Примеры
 
+В приведенном примере происходит загрузка графа в переменную ``graph``, далее задаются начальные и добавляется финальная
+вершина загруженному графу:
+
 ```
+let graph = load "path_to_graph/graph.dot"
+let graphWithOtherStarts = set_start (2,4,6) FOR graph
+let graphWithAddedFinal = add_final (1,3) FOR graph
+```
+
+Далее приведены примеры получения ребер графа, применения ``map`` (инвертирует ребра), ``filter`` (оставляет ребра, у
+которых метки входят в список) и вывода результата:
+
+```
+let edges = get_edges graph
+let mapped = map (\_ {a, label, b} -> {b, label, a}) edges
+
+let labelsList = ("l", "a", "b")
+let filtered = filter (\_ {a, label, b} -> {label in labelsList}) mapped
+
+print filtered
 
 ```
